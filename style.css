@@ -43,6 +43,8 @@ button {
     color: rgba(255, 255, 255, 0.85);
     background-color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+    transition: transform 0.1s, box-shadow 0.1s;
 }
 
 #start-btn {
@@ -53,6 +55,34 @@ button {
     padding: 0.9rem 1.25rem;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+#start-btn:active {
+    transform: translateY(6px);
+    box-shadow: none;
+}
+
+button:active,
+button.key-down {
+    transform: translateY(6px);
+    box-shadow: none;
+    transition: none;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 450;
+    gap: 0.25rem;
+}
+
+#zyklen,
+#phasen {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.95;
+    letter-spacing: 0.05em;
 }
 
 body.break {
