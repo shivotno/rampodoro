@@ -41,10 +41,10 @@ function countdown(){
         if(intervalID === null) {
             if(Notification.permission === "default") {Notification.requestPermission()}
             endTime = Date.now() + remainingTime
-            button.textContent = "Stopp"
+            button.textContent = "Pause"
             intervalID = setInterval(() => {
                 const restTime = endTime - Date.now()
-                if(restTime < WARNING_TIME && !warningSent && Notification.permission === "granted") {
+                if (restTime < WARNING_TIME && !warningSent && timeArray[phaseIndex].duration > WARNING_TIME && Notification.permission === "granted") {
                     new Notification("Rampodoro", {body: `Noch ${WARNING_TIME/MINUTE} Minuten übrig!`})
                     warningSent = true
                 } 
