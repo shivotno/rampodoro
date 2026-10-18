@@ -85,6 +85,13 @@ button.key-down {
     letter-spacing: 0.05em;
 }
 
+#reset-btn {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    font-family: inherit;
+}
+
 body.break {
     background-color: #3d7e9a;
 }

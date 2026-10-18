@@ -11,7 +11,9 @@ const prevBtn = document.getElementById("prev-btn")
 const nextBtn = document.getElementById("next-btn")
 const cycleDisplay = document.getElementById("zyklen")
 const phaseCountDisplay = document.getElementById("phasen")
+const resetBtn = document.getElementById("reset-btn")
 
+resetBtn.addEventListener("click", resetState)
 prevBtn.addEventListener("click", prevPhase)
 nextBtn.addEventListener("click", nextPhase)
 
@@ -29,7 +31,7 @@ document.addEventListener("keyup", (event) => {
     }
 })
 
-const MINUTE = 60 * 1000
+const MINUTE = 60*1000
 const WARNING_TIME = 5*MINUTE
 
 const timeArray = [
@@ -48,6 +50,7 @@ let phaseCount = 0
 let intervalID = null
 let warningSent = false
 
+loadState()
 showPhase()
 
 function formatTime(ms){
@@ -71,6 +74,9 @@ function countdown(){
                     warningSent = true
                 }
                 timer.textContent = formatTime(restTime)
+                document.title = `Rampodoro - ${formatTime(restTime)}`
+                remainingTime = Math.max(0, restTime)
+                saveState()
                 if(restTime <= 0){
                     const finishedPhase = timeArray[phaseIndex]
                     bell.play()
@@ -86,6 +92,7 @@ function countdown(){
                             cycleDisplay.textContent = `Zyklen: ${cycleCount}`
                         }
                     }
+                    saveState()
                 }
             }, 250);
         } else {
@@ -100,13 +107,14 @@ function showPhase(){
     document.body.classList.toggle("break", timeArray[phaseIndex].type === 'break')
     warningSent = false
     button.textContent = "Start"
-    remainingTime = timeArray[phaseIndex].duration
+    document.title = `Rampodoro - ${formatTime(remainingTime)}`
     timer.textContent = formatTime(remainingTime)
     if(timeArray[phaseIndex].type === 'work') {
         phaseLabel.textContent = `Focus - Block ${phaseIndex+1} / 4`
     } else {
         phaseLabel.textContent = "Pause"
     }
+    saveState()
 }
 
 function stopTimer(){
@@ -115,16 +123,53 @@ function stopTimer(){
 }
 
 function nextPhase(){
-    buttonClickSound.play()
     stopTimer()
     phaseIndex = (phaseIndex + 1) % timeArray.length
+    remainingTime = timeArray[phaseIndex].duration
     showPhase()
 }
 
 function prevPhase(){
-    buttonClickSound.play()
     stopTimer()
     phaseIndex = (phaseIndex - 1 + timeArray.length) % timeArray.length
+    remainingTime = timeArray[phaseIndex].duration
+    showPhase()
+}
+
+function saveState(){
+    localStorage.setItem("cycleCount", cycleCount)
+    localStorage.setItem("phaseCount", phaseCount)
+    localStorage.setItem("phaseIndex", phaseIndex)
+    localStorage.setItem("remainingTime", remainingTime)
+}
+
+function loadState(){
+    cycleCount = Number(localStorage.getItem("cycleCount"))
+    phaseCount = Number(localStorage.getItem("phaseCount"))
+    phaseIndex = Number(localStorage.getItem("phaseIndex"))
+    const savedTime = localStorage.getItem("remainingTime")
+    remainingTime = savedTime === null ? timeArray[phaseIndex].duration : Number(savedTime)
+
+    cycleDisplay.textContent = `Zyklen: ${cycleCount}`
+    phaseCountDisplay.textContent = `Abgeschlossene Phasen: ${phaseCount}`
+}
+
+function resetState(){
+    if (!confirm("Zähler und Fortschritt wirklich zurücksetzen?")) return
+
+    stopTimer()
+    localStorage.removeItem("cycleCount")
+    localStorage.removeItem("phaseCount")
+    localStorage.removeItem("phaseIndex")
+    localStorage.removeItem("remainingTime")
+
+    cycleCount = 0
+    phaseCount = 0
+    phaseIndex = 0
+    remainingTime = timeArray[phaseIndex].duration
+
+    cycleDisplay.textContent = `Zyklen: ${cycleCount}`
+    phaseCountDisplay.textContent = `Abgeschlossene Phasen: ${phaseCount}`
     showPhase()
 }
 
