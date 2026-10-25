@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Tomate -->
+  <circle cx="32" cy="37" r="24" fill="#e0533f"/>
+  <!-- Stiel -->
+  <rect x="30.5" y="5" width="3" height="10" rx="1.5" fill="#3f7d3a"/>
+  <!-- Blätter -->
+  <path d="M32 16 C27 9 20 9 15 12 C21 15 25 18 32 19 C39 18 43 15 49 12 C44 9 37 9 32 16 Z" fill="#4f9a4a"/>
+  <!-- Aufsteigende Balken: 5, 10, 15, 20 Minuten -->
+  <rect x="17" y="43" width="6" height="7"  rx="1.5" fill="#ffffff"/>
+  <rect x="25" y="39" width="6" height="11" rx="1.5" fill="#ffffff"/>
+  <rect x="33" y="35" width="6" height="15" rx="1.5" fill="#ffffff"/>
+  <rect x="41" y="31" width="6" height="19" rx="1.5" fill="#ffffff"/>
+</svg>
